@@ -107,6 +107,8 @@ def png2pdf(filename, pages):
 
 if __name__ == "__main__":
     for book in os.listdir('.\\Books'):
+        if book[-4:] == '.txt':
+            continue
         try:
             os.mkdir('.\\Books_temp\\' + book[:-4])
         except:
@@ -117,6 +119,6 @@ if __name__ == "__main__":
         png2pdf(book, p)
         temp_path = '.\\Books_temp\\' + book[:-4] + '\\'
         shutil.rmtree(temp_path)
-        # os.remove('.\\Books\\' + book)
+        os.remove('.\\Books\\' + book)
         print('%s with notes finished' % book)
 
