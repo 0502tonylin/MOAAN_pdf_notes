@@ -49,13 +49,16 @@ def note2png(filename):
         index = {int(x[0].split('/')[-1]): x[1].split('/')[-1].split('-') for x in index}
         # print(size)
         # print(index)
-        with open(resource_path + 'writeNotes.bin', 'rb') as note:
-            note_bin = note.read()
-            for i in index.keys():
-                png = open('.\\Books_temp\\' + filename[:-4] + '\\' + 'note_%s.png' % i, 'wb')
-                for ii in index[i]:
-                    png.write(note_bin[int(ii):int(ii) + size[int(ii)]])
-                png.close()
+        try:
+            with open(resource_path + 'writeNotes.bin', 'rb') as note:
+                note_bin = note.read()
+                for i in index.keys():
+                    png = open('.\\Books_temp\\' + filename[:-4] + '\\' + 'note_%s.png' % i, 'wb')
+                    for ii in index[i]:
+                        png.write(note_bin[int(ii):int(ii) + size[int(ii)]])
+                    png.close()
+        except FileNotFoundError:
+            print('%s has no notes!' % filename)
 
 
 def png_combine(filename, pages):
@@ -64,8 +67,8 @@ def png_combine(filename, pages):
         book = temp_path + 'book_%s.png' % i
         note = temp_path + 'note_%s.png' % i
         if os.path.exists(note):
-            print(book)
-            print(note)
+            # print(book)
+            # print(note)
             img1 = Image.open(book)
             # img1 = img1.crop((0, 71, 1383, 1871))
             img1 = img1.convert('RGBA')
@@ -114,6 +117,6 @@ if __name__ == "__main__":
         png2pdf(book, p)
         temp_path = '.\\Books_temp\\' + book[:-4] + '\\'
         shutil.rmtree(temp_path)
-        os.remove('.\\Books\\' + book)
+        # os.remove('.\\Books\\' + book)
         print('%s with notes finished' % book)
 
